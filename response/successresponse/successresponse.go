@@ -1,11 +1,13 @@
 package successresponse
 
-import "fmt"
+import (
+	"encoding/json"
+)
 
 type SuccessResponse struct {
-	status  uint
-	message string
-	data    any
+	Status  uint
+	Message string
+	Data    interface{} `json:"data"`
 }
 
 func NewSuccessResponse() *SuccessResponse {
@@ -13,24 +15,21 @@ func NewSuccessResponse() *SuccessResponse {
 }
 
 func (r *SuccessResponse) SetStatus(status uint) *SuccessResponse {
-	r.status = status
+	r.Status = status
 	return r
 }
 
 func (r *SuccessResponse) SetMessage(message string) *SuccessResponse {
-	r.message = message
+	r.Message = message
 	return r
 }
 
-func (r *SuccessResponse) SetData(data any) *SuccessResponse {
-	r.data = data
+func (r *SuccessResponse) SetData(data interface{}) *SuccessResponse {
+	r.Data = data
 	return r
 }
 
 func (r *SuccessResponse) Buid() string {
-	return fmt.Sprintf(`{
-		"status": "%d",
-		"message": "%s",
-		"data": "%v"
-	}`, r.status, r.message, r.data)
+	bytes, _ := json.Marshal(r)
+	return string(bytes)
 }
