@@ -5,7 +5,7 @@ import (
 	"QA-Game/entity"
 	"database/sql"
 	"fmt"
-)
+	)
 
 type Player struct {
 	Connection *Mysql
@@ -45,9 +45,25 @@ func (p *Player) Store(playerDTO playerdto.PlayerRegister) (entity.Player, error
 	if id, err := result.LastInsertId(); err == nil {
 		playerEntity.Id = uint(id)
 		playerEntity.Name = playerDTO.Name
+		playerEntity.PhoneNumber = playerDTO.PhoneNumber
 		playerEntity.Password = playerDTO.Password
 		playerEntity.Avatar = playerDTO.Avatar
 	}
 
 	return playerEntity, nil
+}
+
+func (p *Player) FindPlayerByPhoneNumber(phoneNumber string) (string, string, error) {
+
+	result := p.Connection.DB.QueryRow("SELECT phone_number, password FROM players WHERE phone_number = ?", phoneNumber)
+
+	var phone_number, password string
+
+	scanResult := result.Scan(&phone_number, &password)
+
+	if scanResult != nil {
+		return "", "", fmt.Errorf("Player not found.")
+	}
+
+	return phone_number, password, nil
 }

@@ -6,7 +6,8 @@ import (
 	"QA-Game/repository/mysql"
 	"QA-Game/response/richerror"
 	"QA-Game/response/successresponse"
-	"QA-Game/validation"
+	"QA-Game/services/jwttoken"
+	"QA-Game/validation/authvalidation"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -69,4 +70,48 @@ func (auth AuthService) Register(req *http.Request) string {
 	return auth.SuccessResponse.SetMessage("Player created successfully").SetStatus(200).SetData(playerEntity).Buid()
 }
 
+func (auth AuthService) Login(req *http.Request) string {
+
+	if req.Method != http.MethodPost {
+		return "Post method only."
+	}
+
+	playerLoginDTO := playerdto.PlayerLogin{}
+
+	playerLoginValidation := authvalidation.PlayerLogin{}
+
+	RequestBodyData, RequestBodyDataErr := io.ReadAll(req.Body)
+
+	if RequestBodyDataErr != nil {
+		return auth.ErrorResponse.SetMessage("System error happened").SetStatus(500).Buid()
+	}
+
+	json.Unmarshal(RequestBodyData, &playerLoginDTO)
+
+	result := playerLoginValidation.ValidatePhoneNumber(playerLoginDTO.PhoneNumber)
+
+	if !result {
+		return auth.ErrorResponse.SetMessage("phone number must be 11 charecters.").Buid()
+	}
+
+	result = playerLoginValidation.ValidatePassword(playerLoginDTO.Password)
+
+	if !result {
+		return auth.ErrorResponse.SetMessage("Password must more then 5 charecters.").Buid()
+	}
+
+	phoneNumber, password, err := auth.PlayerRepo.FindPlayerByPhoneNumber(playerLoginDTO.PhoneNumber)
+
+	if err != nil {
+		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(404).Buid()
+	}
+
+	// todo => the password must be hashed
+	if phoneNumber != playerLoginDTO.PhoneNumber || password != playerLoginDTO.Password {
+		return auth.ErrorResponse.SetMessage("phone number or password is wrong").Buid()
+	}
+
+	jwtToken := jwttoken.NewJwtToken().CreateToken(playerLoginDTO.PhoneNumber)
+
+	return auth.SuccessResponse.SetData(jwtToken).SetStatus(200).Buid()
 }

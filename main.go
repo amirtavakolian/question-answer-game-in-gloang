@@ -14,8 +14,10 @@ func main() {
 		res.Write([]byte(result))
 	})
 
-	
+	http.HandleFunc("/auth/login", func(res http.ResponseWriter, req *http.Request) {
+		result := authService.Login(req)
+		res.Write([]byte(result))
+	})
 
 	http.ListenAndServe("127.0.0.1:8000", nil)
-
 }

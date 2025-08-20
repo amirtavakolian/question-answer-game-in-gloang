@@ -8,4 +8,5 @@ import (
 type PlayerRepository interface {
 	IsPhoneNumberExist(phoneNumber string) (bool, error)
 	Store(playerDTO playerdto.PlayerRegister) (entity.Player, error)
+	FindPlayerByPhoneNumber(phoneNumber string) (string, string, error)
 }
