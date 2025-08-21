@@ -19,6 +19,11 @@ type AuthService struct {
 	SuccessResponse successresponse.SuccessResponse
 }
 
+type LoginResponse struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
 func NewAuthService() AuthService {
 	return AuthService{
 		PlayerRepo:      mysql.NewPlayerRepo(),
@@ -111,7 +116,10 @@ func (auth AuthService) Login(req *http.Request) string {
 		return auth.ErrorResponse.SetMessage("phone number or password is wrong").Buid()
 	}
 
-	jwtToken := jwttoken.NewJwtToken().CreateToken(playerLoginDTO.PhoneNumber)
+	loginResponse := LoginResponse{
+		AccessToken:  jwttoken.NewJwtToken().CreateAccessToken(playerLoginDTO.PhoneNumber),
+		RefreshToken: jwttoken.NewJwtToken().CreateRefreshToken(playerLoginDTO.PhoneNumber),
+	}
 
-	return auth.SuccessResponse.SetData(jwtToken).SetStatus(200).Buid()
+	return auth.SuccessResponse.SetData(loginResponse).SetStatus(200).Buid()
 }

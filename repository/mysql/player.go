@@ -5,7 +5,7 @@ import (
 	"QA-Game/entity"
 	"database/sql"
 	"fmt"
-	)
+)
 
 type Player struct {
 	Connection *Mysql

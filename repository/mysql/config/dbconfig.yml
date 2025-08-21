@@ -1,0 +1,11 @@
+development:
+  dialect: mysql
+  datasource: root:@(localhost:3306)/question-game?parseTime=true
+  dir: repository/mysql/migrations
+  table: migrations
+
+# production:
+#   dialect: postgres
+#   datasource: dbname=myapp sslmode=disable
+#   dir: migrations/postgres
+#   table: migrations
