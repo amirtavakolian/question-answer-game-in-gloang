@@ -1,41 +1,41 @@
 package richerror
 
-import "fmt"
+import "QA-Game/response"
 
 type ErrorResponse struct {
-	status  uint
-	message string
-	data    any
+	Status  int
+	Message string
+	Data    interface{}
 }
 
 func NewErrorResponse() *ErrorResponse {
 	return &ErrorResponse{}
 }
 
-func (r *ErrorResponse) SetStatus(status uint) *ErrorResponse {
-	r.status = status
+func (r *ErrorResponse) SetStatus(status int) response.Response {
+	r.Status = status
 	return r
 }
 
-func (r *ErrorResponse) SetMessage(message string) *ErrorResponse {
-	r.message = message
+func (r *ErrorResponse) SetMessage(message string) response.Response {
+	r.Message = message
 	return r
 }
 
-func (r *ErrorResponse) SetData(data any) *ErrorResponse {
-	r.data = data
+func (r *ErrorResponse) SetData(data any) response.Response {
+	r.Data = data
 	return r
 }
 
-func (r *ErrorResponse) Buid() string {
+func (r *ErrorResponse) GetStatus() int {
+	return r.Status
+}
 
-	if r.data == nil {
-		r.data = ""
+func (r *ErrorResponse) Build() response.Response {
+
+	if r.Data == nil {
+		r.Data = ""
 	}
 
-	return fmt.Sprintf(`{
-		"status": "%d",
-		"message": "%s",
-		"data": "%v"
-	}`, r.status, r.message, r.data)
+	return r
 }

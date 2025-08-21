@@ -1,4 +1,5 @@
 package contracts
+
 import "QA-Game/repository/dbresponses"
 
 type ProfileRepository interface {

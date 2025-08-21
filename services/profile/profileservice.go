@@ -3,10 +3,11 @@ package profile
 import (
 	"QA-Game/repository/contracts"
 	"QA-Game/repository/mysql"
+	"QA-Game/response"
 	"QA-Game/response/richerror"
 	"QA-Game/response/successresponse"
 	"QA-Game/services/jwttoken"
-	"net/http"
+	"github.com/labstack/echo/v4"
 )
 
 type ProfileService struct {
@@ -27,23 +28,19 @@ func NewProfileService() ProfileService {
 	}
 }
 
-func (profileService ProfileService) GetPlayerProfile(req *http.Request) string {
+func (profileService ProfileService) GetPlayerProfile(c echo.Context) response.Response {
 
-	if req.Method != http.MethodGet {
-		return profileService.ErrorResponse.SetMessage("Only GET method is allowed").Buid()
-	}
-
-	getJwtResult, getJwtMsg, claims := profileService.JwtService.Get(req.Header.Get("Authorization"))
+	getJwtResult, getJwtMsg, claims := profileService.JwtService.Get(c.Request().Header.Get(echo.HeaderAuthorization))
 
 	if !getJwtResult {
-		return profileService.ErrorResponse.SetMessage(getJwtMsg).Buid()
+		return profileService.ErrorResponse.SetMessage(getJwtMsg).Build()
 	}
 
 	playerProfile := profileService.ProfileRepo.GetPlayerProfile(claims.PhoneNumber)
 
 	if !playerProfile.Status {
-		return profileService.ErrorResponse.SetMessage(playerProfile.Message).SetStatus(404).Buid()
+		return profileService.ErrorResponse.SetMessage(playerProfile.Message).SetStatus(404).Build()
 	}
 
-	return profileService.SuccessResponse.SetData(playerProfile.Data).Buid()
+	return profileService.SuccessResponse.SetData(playerProfile.Data).Build()
 }

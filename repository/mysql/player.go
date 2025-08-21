@@ -46,7 +46,6 @@ func (p *Player) Store(playerDTO playerdto.PlayerRegister) (entity.Player, error
 		playerEntity.Id = uint(id)
 		playerEntity.Name = playerDTO.Name
 		playerEntity.PhoneNumber = playerDTO.PhoneNumber
-		playerEntity.Password = playerDTO.Password
 		playerEntity.Avatar = playerDTO.Avatar
 	}
 
