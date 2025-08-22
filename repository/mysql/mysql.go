@@ -20,6 +20,10 @@ func NewMysql() *Mysql {
 		log.Fatal(err.Error())
 	}
 
+	if err = db.Ping(); err != nil {
+		log.Fatal("Failed to connect to MySQL:", err)
+	}
+
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
