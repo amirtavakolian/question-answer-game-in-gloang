@@ -1,22 +1,39 @@
 package authvalidation
 
-type PlayerLogin struct {
-}
+import (
+	"QA-Game/dto/playerdto"
+	"github.com/go-ozzo/ozzo-validation/v4"
+	"regexp"
+	"strings"
+)
 
-func (r PlayerLogin) ValidatePhoneNumber(phoneNumber string) bool {
-	// todo: use regex to validate phone number
-	if len(phoneNumber) != 11 {
-		return false
+type PlayerLogin struct{}
+
+func (r PlayerLogin) Validate(loginPlayerDto playerdto.PlayerLogin) (bool, map[string]interface{}) {
+
+	err := validation.ValidateStruct(&loginPlayerDto,
+
+		validation.Field(&loginPlayerDto.PhoneNumber,
+			validation.Required,
+			validation.Length(6, 50),
+			validation.Match(regexp.MustCompile("^09\\d{9}$")).Error("phone number format is not correct"),
+		),
+
+		validation.Field(&loginPlayerDto.Password,
+			validation.Required,
+			validation.Length(6, 200),
+		),
+	)
+
+	if err != nil {
+		splitErrors := strings.Split(err.Error(), ";")
+
+		c := make(map[string]interface{})
+
+		c["errors"] = splitErrors
+
+		return false, c
 	}
 
-	return true
-}
-
-func (r PlayerLogin) ValidatePassword(password string) bool {
-	// todo: use regex to validate phone number
-	if len(password) < 6 {
-		return false
-	}
-
-	return true
+	return true, nil
 }

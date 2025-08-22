@@ -39,31 +39,23 @@ func (auth AuthService) Register(c echo.Context) response.Response {
 
 	if err := c.Bind(&registerPlayerDTO); err != nil {
 		//todo => extend the error response struct to hold & log system errors for developers, then remove them from users
-		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(500).Build()
+		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(http.StatusInternalServerError).Build()
 	}
 
-	validationResult := registerPlayerValidation.ValidatePhoneNumber(registerPlayerDTO.PhoneNumber)
+	validationResult, validationMessage := registerPlayerValidation.Validate(registerPlayerDTO)
 
 	if !validationResult {
-		return auth.ErrorResponse.SetMessage("Phone number is not valid").SetStatus(http.StatusBadRequest).Build()
+		return auth.ErrorResponse.SetData(validationMessage).SetStatus(http.StatusBadRequest).Build()
 	}
 
-	res, msg := auth.PlayerRepo.IsPhoneNumberExist(registerPlayerDTO.PhoneNumber)
-
-	if !res {
-		return auth.ErrorResponse.SetMessage(msg.Error()).SetStatus(http.StatusBadRequest).Build()
-	}
-	// todo => validate first name => should not be empty
 	// todo => hash password before storing in database
-	// todo => move IsPhoneNumberExist to validation package (registerPlayerValidation)
-
 	playerEntity, storeError := auth.PlayerRepo.Store(registerPlayerDTO)
 
 	if storeError != nil {
-		return auth.ErrorResponse.SetMessage(storeError.Error()).SetStatus(400).Build()
+		return auth.ErrorResponse.SetMessage(storeError.Error()).SetStatus(http.StatusBadRequest).Build()
 	}
 
-	return auth.SuccessResponse.SetMessage("Player created successfully").SetStatus(200).SetData(playerEntity).Build()
+	return auth.SuccessResponse.SetMessage("Player created successfully").SetStatus(http.StatusOK).SetData(playerEntity).Build()
 }
 
 func (auth AuthService) Login(c echo.Context) response.Response {
@@ -77,16 +69,10 @@ func (auth AuthService) Login(c echo.Context) response.Response {
 		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(500).Build()
 	}
 
-	result := playerLoginValidation.ValidatePhoneNumber(playerLoginDTO.PhoneNumber)
+	validationResult, validationMessage := playerLoginValidation.Validate(playerLoginDTO)
 
-	if !result {
-		return auth.ErrorResponse.SetMessage("phone number must be 11 charecters.").Build()
-	}
-
-	result = playerLoginValidation.ValidatePassword(playerLoginDTO.Password)
-
-	if !result {
-		return auth.ErrorResponse.SetMessage("Password must more then 5 charecters.").Build()
+	if !validationResult {
+		return auth.ErrorResponse.SetData(validationMessage).SetStatus(http.StatusBadRequest).Build()
 	}
 
 	phoneNumber, password, err := auth.PlayerRepo.FindPlayerByPhoneNumber(playerLoginDTO.PhoneNumber)
