@@ -1,11 +1,11 @@
-package httpdelivery
+package httpserver
 
 import (
 	"QA-Game/services/auth"
 	"github.com/labstack/echo/v4"
-	)
+)
 
-func register(c echo.Context) error {
+func (server *HttpServer) playerRegister(c echo.Context) error {
 
 	authService := auth.NewAuthService()
 
@@ -14,7 +14,7 @@ func register(c echo.Context) error {
 	return c.JSON(result.GetStatus(), result)
 }
 
-func login(c echo.Context) error {
+func (server *HttpServer) playerLogin(c echo.Context) error {
 
 	authService := auth.NewAuthService()
 

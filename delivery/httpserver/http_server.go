@@ -1,4 +1,4 @@
-package httpdelivery
+package httpserver
 
 import (
 	"github.com/labstack/echo/v4"
@@ -19,10 +19,10 @@ func (server *HttpServer) Serve() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.POST("/auth/register", register)
-	e.POST("/auth/login", login)
+	e.POST("/auth/playerRegister", server.playerRegister)
+	e.POST("/auth/playerLogin", server.playerLogin)
 
-	e.GET("/player/profile", getPlayerProfile)
+	e.GET("/player/profile", server.playerProfile)
 
 	e.Start("127.0.0.1:8000")
 
