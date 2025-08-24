@@ -9,7 +9,6 @@ import (
 	"QA-Game/response/successresponse"
 	"QA-Game/services/jwttoken"
 	"QA-Game/validation/authvalidation"
-	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
@@ -32,15 +31,9 @@ func NewAuthService() AuthService {
 	}
 }
 
-func (auth AuthService) Register(c echo.Context) response.Response {
+func (auth AuthService) Register(registerPlayerDTO playerdto.PlayerRegisterRequest) response.Response {
 
-	registerPlayerDTO := playerdto.PlayerRegister{}
-	registerPlayerValidation := authvalidation.PlayerRegister{}
-
-	if err := c.Bind(&registerPlayerDTO); err != nil {
-		//todo => extend the error response struct to hold & log system errors for developers, then remove them from users
-		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(http.StatusInternalServerError).Build()
-	}
+	registerPlayerValidation := authvalidation.PlayerRegisterValidation{}
 
 	validationResult, validationMessage := registerPlayerValidation.Validate(registerPlayerDTO)
 
@@ -58,16 +51,9 @@ func (auth AuthService) Register(c echo.Context) response.Response {
 	return auth.SuccessResponse.SetMessage("Player created successfully").SetStatus(http.StatusOK).SetData(playerEntity).Build()
 }
 
-func (auth AuthService) Login(c echo.Context) response.Response {
+func (auth AuthService) Login(playerLoginDTO playerdto.PlayerLoginRequest) response.Response {
 
-	playerLoginDTO := playerdto.PlayerLogin{}
-
-	playerLoginValidation := authvalidation.PlayerLogin{}
-
-	if err := c.Bind(&playerLoginDTO); err != nil {
-		//todo => extend the error response struct to hold & log system errors for developers, then remove them from users
-		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(500).Build()
-	}
+	playerLoginValidation := authvalidation.PlayerLoginValidation{}
 
 	validationResult, validationMessage := playerLoginValidation.Validate(playerLoginDTO)
 

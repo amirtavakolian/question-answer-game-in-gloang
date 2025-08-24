@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-type PlayerLogin struct{}
+type PlayerLoginValidation struct{}
 
-func (r PlayerLogin) Validate(loginPlayerDto playerdto.PlayerLogin) (bool, map[string]interface{}) {
+func (r PlayerLoginValidation) Validate(loginPlayerDto playerdto.PlayerLoginRequest) (bool, map[string]interface{}) {
 
 	err := validation.ValidateStruct(&loginPlayerDto,
 

@@ -2,7 +2,7 @@ package playerdto
 
 import "time"
 
-type PlayerRegister struct {
+type PlayerRegisterRequest struct {
 	Name        string    `json:"first_name"`
 	PhoneNumber string    `json:"phone_number"`
 	Password    string    `json:"password"`

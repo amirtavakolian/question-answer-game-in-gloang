@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
-type PlayerRegister struct{}
+type PlayerRegisterValidation struct{}
 
-func (r PlayerRegister) Validate(registerPlayerDTO playerdto.PlayerRegister) (bool, map[string]interface{}) {
+func (r PlayerRegisterValidation) Validate(registerPlayerDTO playerdto.PlayerRegisterRequest) (bool, map[string]interface{}) {
 
 	err := validation.ValidateStruct(&registerPlayerDTO,
 
