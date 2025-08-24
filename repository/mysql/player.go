@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"QA-Game/dto/playerdto"
+	"QA-Game/param/playerparam"
 	"QA-Game/entity"
 	"database/sql"
 	"fmt"
@@ -32,7 +32,7 @@ func (p *Player) IsPhoneNumberExist(phoneNumber string) (bool, error) {
 	return false, fmt.Errorf("Phone number is available")
 }
 
-func (p *Player) Store(playerDTO playerdto.PlayerRegister) (entity.Player, error) {
+func (p *Player) Store(playerDTO playerparam.PlayerRegisterRequest) (entity.Player, error) {
 
 	playerEntity := entity.Player{}
 

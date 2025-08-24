@@ -68,7 +68,7 @@ func (jwtToken JwtService) createToken(phoneNumber string, subject string) strin
 
 func (jwtToken JwtService) Get(tokenString string) (bool, string, *MyCustomClaims) {
 
-	jwtResponse := jwtToken.ValidateTokenExpiration(tokenString)
+	jwtResponse := jwtToken.ParseToken(tokenString)
 
 	if !jwtResponse.Status {
 		return false, jwtResponse.Message, nil
@@ -81,7 +81,7 @@ func (jwtToken JwtService) Get(tokenString string) (bool, string, *MyCustomClaim
 	}
 }
 
-func (jwtToken JwtService) ValidateTokenExpiration(tokenString string) JwtResponse {
+func (jwtToken JwtService) ParseToken(tokenString string) JwtResponse {
 
 	token, err := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(token *jwt.Token) (any, error) {
 		return []byte(jwtToken.signedKey), nil

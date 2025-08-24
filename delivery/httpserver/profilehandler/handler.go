@@ -1,11 +1,18 @@
-package httpserver
+package profilehandler
 
 import (
 	"QA-Game/services/profile"
 	"github.com/labstack/echo/v4"
 )
 
-func (server *HttpServer) playerProfile(c echo.Context) error {
+type Handler struct {
+}
+
+func New() *Handler {
+	return &Handler{}
+}
+
+func (h *Handler) PlayerProfile(c echo.Context) error {
 
 	profileService := profile.NewProfileService()
 

@@ -1,6 +1,6 @@
-package playerdto
+package playerparam
 
-type PlayerLogin struct {
+type PlayerLoginRequest struct {
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
 }

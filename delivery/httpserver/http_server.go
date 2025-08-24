@@ -1,6 +1,8 @@
 package httpserver
 
 import (
+	"QA-Game/delivery/httpserver/playerhandler"
+	"QA-Game/delivery/httpserver/profilehandler"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -14,15 +16,17 @@ func NewHttpServer() HttpServer {
 
 func (server *HttpServer) Serve() {
 
+	playerHld := playerhandler.New()
+	profileHld := profilehandler.New()
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.POST("/auth/playerRegister", server.playerRegister)
-	e.POST("/auth/playerLogin", server.playerLogin)
+	playerHld.SetPlayerRoutes(e)
+	profileHld.SetProfileRoutes(e)
 
-	e.GET("/player/profile", server.playerProfile)
 
 	e.Start("127.0.0.1:8000")
 

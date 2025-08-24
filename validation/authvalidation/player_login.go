@@ -1,15 +1,15 @@
 package authvalidation
 
 import (
-	"QA-Game/dto/playerdto"
+	"QA-Game/param/playerparam"
 	"github.com/go-ozzo/ozzo-validation/v4"
 	"regexp"
 	"strings"
 )
 
-type PlayerLogin struct{}
+type PlayerLoginValidation struct{}
 
-func (r PlayerLogin) Validate(loginPlayerDto playerdto.PlayerLogin) (bool, map[string]interface{}) {
+func (r PlayerLoginValidation) Validate(loginPlayerDto playerparam.PlayerLoginRequest) (bool, map[string]interface{}) {
 
 	err := validation.ValidateStruct(&loginPlayerDto,
 

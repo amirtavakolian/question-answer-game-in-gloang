@@ -1,7 +1,7 @@
 package authvalidation
 
 import (
-	"QA-Game/dto/playerdto"
+	"QA-Game/param/playerparam"
 	"QA-Game/repository/mysql"
 	"github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
-type PlayerRegister struct{}
+type PlayerRegisterValidation struct{}
 
-func (r PlayerRegister) Validate(registerPlayerDTO playerdto.PlayerRegister) (bool, map[string]interface{}) {
+func (r PlayerRegisterValidation) Validate(registerPlayerDTO playerparam.PlayerRegisterRequest) (bool, map[string]interface{}) {
 
 	err := validation.ValidateStruct(&registerPlayerDTO,
 
