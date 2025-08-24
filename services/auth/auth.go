@@ -23,6 +23,7 @@ type LoginResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+// a MySQL Player repository, a rich error response builder, and a success response builder.
 func NewAuthService() AuthService {
 	return AuthService{
 		PlayerRepo:      mysql.NewPlayerRepo(),

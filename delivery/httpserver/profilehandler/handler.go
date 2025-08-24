@@ -8,6 +8,7 @@ import (
 type Handler struct {
 }
 
+// New returns a pointer to a new Handler.
 func New() *Handler {
 	return &Handler{}
 }

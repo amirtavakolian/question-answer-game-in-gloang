@@ -15,6 +15,7 @@ type Handler struct {
 	SuccessResponse response.Response
 }
 
+// response builders.
 func New() *Handler {
 	return &Handler{
 		ErrorResponse:   richerror.NewErrorResponse(),
