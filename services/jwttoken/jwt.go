@@ -13,7 +13,7 @@ const (
 
 type MyCustomClaims struct {
 	PhoneNumber string `json:"phone_number"`
-	jwt.RegisteredClaims
+	*jwt.RegisteredClaims
 }
 
 type JwtResponse struct {

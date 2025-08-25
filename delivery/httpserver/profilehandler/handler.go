@@ -6,10 +6,13 @@ import (
 )
 
 type Handler struct {
+	authSignKey []byte
 }
 
-func New() *Handler {
-	return &Handler{}
+func New(signKey string) *Handler {
+	return &Handler{
+		authSignKey: []byte(signKey),
+	}
 }
 
 func (h *Handler) PlayerProfile(c echo.Context) error {

@@ -17,7 +17,7 @@ func NewHttpServer() HttpServer {
 func (server *HttpServer) Serve() {
 
 	playerHld := playerhandler.New()
-	profileHld := profilehandler.New()
+	profileHld := profilehandler.New("@@##AAAtt##$@#@%23432424asdsad345345SFD")
 
 	e := echo.New()
 
@@ -26,7 +26,6 @@ func (server *HttpServer) Serve() {
 
 	playerHld.SetPlayerRoutes(e)
 	profileHld.SetProfileRoutes(e)
-
 
 	e.Start("127.0.0.1:8000")
 

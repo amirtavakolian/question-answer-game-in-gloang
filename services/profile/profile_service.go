@@ -7,8 +7,9 @@ import (
 	"QA-Game/response/richerror"
 	"QA-Game/response/successresponse"
 	"QA-Game/services/jwttoken"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
-)
+	)
 
 type ProfileService struct {
 	PlayerRepo      contracts.PlayerRepository
@@ -30,13 +31,9 @@ func NewProfileService() ProfileService {
 
 func (profileService ProfileService) GetPlayerProfile(c echo.Context) response.Response {
 
-	getJwtResult, getJwtMsg, claims := profileService.JwtService.Get(c.Request().Header.Get(echo.HeaderAuthorization))
+	claims := c.Get("user").(*jwt.Token).Claims.(jwt.MapClaims)["phone_number"]
 
-	if !getJwtResult {
-		return profileService.ErrorResponse.SetMessage(getJwtMsg).Build()
-	}
-
-	playerProfile := profileService.ProfileRepo.GetPlayerProfile(claims.PhoneNumber)
+	playerProfile := profileService.ProfileRepo.GetPlayerProfile(claims.(string))
 
 	if !playerProfile.Status {
 		return profileService.ErrorResponse.SetMessage(playerProfile.Message).SetStatus(404).Build()
