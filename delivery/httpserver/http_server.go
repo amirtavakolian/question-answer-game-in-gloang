@@ -21,7 +21,8 @@ func (server *HttpServer) Serve() {
 
 	playerHld := playerhandler.New()
 	profileHld := profilehandler.New(signKey)
-	rolepermissionHld := rolepermissionhandler.New(signKey)
+	roleHld := rolepermissionhandler.NewRoleHandler(signKey)
+	permissionHld := rolepermissionhandler.NewPermissionHandler(signKey)
 
 	e := echo.New()
 
@@ -30,7 +31,8 @@ func (server *HttpServer) Serve() {
 
 	playerHld.SetPlayerRoutes(e)
 	profileHld.SetProfileRoutes(e)
-	rolepermissionHld.SetRoleRoutes(e)
+	roleHld.SetRoutes(e)
+	permissionHld.SetPermissionRoutes(e)
 
 	e.Start("127.0.0.1:8000")
 
