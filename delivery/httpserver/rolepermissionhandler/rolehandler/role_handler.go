@@ -1,7 +1,7 @@
-package rolepermissionhandler
+package rolehandler
 
 import (
-	"QA-Game/param/roleparam"
+	"QA-Game/param/rolepermissionparam"
 	"QA-Game/services/rolepermission"
 	"github.com/labstack/echo/v4"
 )
@@ -20,7 +20,7 @@ func NewRoleHandler(signKey string) RoleHandler {
 
 func (h RoleHandler) Store(c echo.Context) error {
 
-	roleParam := roleparam.StoreRoleParam{}
+	roleParam := rolepermissionparam.StoreRoleParam{}
 
 	c.Bind(&roleParam)
 

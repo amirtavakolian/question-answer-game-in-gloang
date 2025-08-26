@@ -1,7 +1,7 @@
 package rolepermission
 
 import (
-	"QA-Game/param/roleparam"
+	"QA-Game/param/rolepermissionparam"
 	"QA-Game/repository/contracts"
 	"QA-Game/repository/mysql"
 	"QA-Game/response"
@@ -27,7 +27,7 @@ func New() RoleService {
 	}
 }
 
-func (s RoleService) Store(roleParam roleparam.StoreRoleParam) response.Response {
+func (s RoleService) Store(roleParam rolepermissionparam.StoreRoleParam) response.Response {
 
 	validateRoleResult, validateRoleData := s.RoleValidationService.Validate(roleParam)
 

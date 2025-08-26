@@ -1,4 +1,4 @@
-package rolepermissionhandler
+package permissionhandler
 
 import (
 	mw "github.com/labstack/echo-jwt/v4"

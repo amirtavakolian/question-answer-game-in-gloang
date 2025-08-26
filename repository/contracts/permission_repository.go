@@ -1,10 +1,10 @@
 package contracts
 
 import (
-	"QA-Game/param/permissionparam"
-	"QA-Game/repository/dbresponses"
+		"QA-Game/param/rolepermissionparam"
+"QA-Game/repository/dbresponses"
 )
 
 type PermissionRepository interface {
-	Store(permission permissionparam.StorePermissionParam) dbresponses.PermissionResponse
+	Store(permission rolepermissionparam.StorePermissionParam) dbresponses.PermissionResponse
 }

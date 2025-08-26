@@ -1,8 +1,8 @@
 package mysql
 
 import (
-	"QA-Game/param/permissionparam"
-	"QA-Game/repository/dbresponses"
+		"QA-Game/param/rolepermissionparam"
+"QA-Game/repository/dbresponses"
 )
 
 type Permission struct {
@@ -15,7 +15,7 @@ func NewPermissionRepo() *Permission {
 	}
 }
 
-func (permission Permission) Store(permissionParam permissionparam.StorePermissionParam) dbresponses.PermissionResponse {
+func (permission Permission) Store(permissionParam rolepermissionparam.StorePermissionParam) dbresponses.PermissionResponse {
 
 	_, err := permission.Connection.DB.Exec("INSERT INTO permissions (name, description) values (?, ?)", permissionParam.Name, permissionParam.Description)
 

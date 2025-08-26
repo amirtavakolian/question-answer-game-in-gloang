@@ -1,7 +1,7 @@
 package rolepermvalidation
 
 import (
-	"QA-Game/param/roleparam"
+	"QA-Game/param/rolepermissionparam"
 	"QA-Game/repository/mysql"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"strings"
@@ -14,7 +14,7 @@ func NewRoleValidation() RoleValidation {
 	return RoleValidation{}
 }
 
-func (r RoleValidation) Validate(roleParam roleparam.StoreRoleParam) (bool, map[string]interface{}) {
+func (r RoleValidation) Validate(roleParam rolepermissionparam.StoreRoleParam) (bool, map[string]interface{}) {
 
 	err := validation.ValidateStruct(&roleParam,
 		validation.Field(&roleParam.Name,

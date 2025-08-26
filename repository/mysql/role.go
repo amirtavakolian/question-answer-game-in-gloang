@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"QA-Game/param/roleparam"
+	"QA-Game/param/rolepermissionparam"
 	"QA-Game/repository/dbresponses"
 )
 
@@ -15,7 +15,7 @@ func NewRoleRepo() Role {
 	}
 }
 
-func (role Role) Store(roleParam roleparam.StoreRoleParam) dbresponses.RoleResponse {
+func (role Role) Store(roleParam rolepermissionparam.StoreRoleParam) dbresponses.RoleResponse {
 
 	_, err := role.Connection.DB.Exec("INSERT INTO roles (name, description) values (?, ?)", roleParam.Name, roleParam.Description)
 

@@ -3,8 +3,9 @@ package httpserver
 import (
 	"QA-Game/delivery/httpserver/playerhandler"
 	"QA-Game/delivery/httpserver/profilehandler"
-	"QA-Game/delivery/httpserver/rolepermissionhandler"
-	"github.com/labstack/echo/v4"
+		"QA-Game/delivery/httpserver/rolepermissionhandler/permissionhandler"
+"QA-Game/delivery/httpserver/rolepermissionhandler/rolehandler"
+"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
@@ -21,8 +22,8 @@ func (server *HttpServer) Serve() {
 
 	playerHld := playerhandler.New()
 	profileHld := profilehandler.New(signKey)
-	roleHld := rolepermissionhandler.NewRoleHandler(signKey)
-	permissionHld := rolepermissionhandler.NewPermissionHandler(signKey)
+	roleHld := rolehandler.NewRoleHandler(signKey)
+	permissionHld := permissionhandler.NewPermissionHandler(signKey)
 
 	e := echo.New()
 
