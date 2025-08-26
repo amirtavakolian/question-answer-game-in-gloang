@@ -52,7 +52,7 @@ func (jwtToken JwtService) createToken(playerDto playerparam.PlayerLoginRequest,
 
 	anotherClaim := jwt.MapClaims{
 		"phone_number": playerDto.PhoneNumber,
-		"user_id":      playerDto.UserId,
+		"player_id":      playerDto.PlayerId,
 		"exp":          jwtToken.accessExpirationTime,
 		"sub":          subject,
 	}

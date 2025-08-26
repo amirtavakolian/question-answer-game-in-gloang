@@ -59,7 +59,7 @@ func (p *Player) FindPlayerByPhoneNumber(phoneNumber string) (dbresponses.Player
 
 	var response dbresponses.Player
 
-	scanResult := result.Scan(&response.UserId, &response.PhoneNumber, &response.Password)
+	scanResult := result.Scan(&response.PlayerId, &response.PhoneNumber, &response.Password)
 
 	if scanResult != nil {
 		return response, fmt.Errorf("Player not found.")

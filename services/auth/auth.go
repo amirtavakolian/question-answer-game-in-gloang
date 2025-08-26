@@ -72,7 +72,7 @@ func (auth AuthService) Login(playerLoginDTO playerparam.PlayerLoginRequest) res
 		return auth.ErrorResponse.SetMessage("phone number or password is wrong").Build()
 	}
 
-	playerLoginDTO.UserId = result.UserId
+	playerLoginDTO.PlayerId = result.PlayerId
 
 	loginResponse := LoginResponse{
 		AccessToken:  jwttoken.NewJwtToken().CreateAccessToken(playerLoginDTO),
