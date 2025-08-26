@@ -61,20 +61,22 @@ func (auth AuthService) Login(playerLoginDTO playerparam.PlayerLoginRequest) res
 		return auth.ErrorResponse.SetData(validationMessage).SetStatus(http.StatusBadRequest).Build()
 	}
 
-	phoneNumber, password, err := auth.PlayerRepo.FindPlayerByPhoneNumber(playerLoginDTO.PhoneNumber)
+	result, err := auth.PlayerRepo.FindPlayerByPhoneNumber(playerLoginDTO.PhoneNumber)
 
 	if err != nil {
 		return auth.ErrorResponse.SetMessage(err.Error()).SetStatus(404).Build()
 	}
 
 	// todo => the password must be hashed
-	if phoneNumber != playerLoginDTO.PhoneNumber || password != playerLoginDTO.Password {
+	if result.PhoneNumber != playerLoginDTO.PhoneNumber || result.Password != playerLoginDTO.Password {
 		return auth.ErrorResponse.SetMessage("phone number or password is wrong").Build()
 	}
 
+	playerLoginDTO.UserId = result.UserId
+
 	loginResponse := LoginResponse{
-		AccessToken:  jwttoken.NewJwtToken().CreateAccessToken(playerLoginDTO.PhoneNumber),
-		RefreshToken: jwttoken.NewJwtToken().CreateRefreshToken(playerLoginDTO.PhoneNumber),
+		AccessToken:  jwttoken.NewJwtToken().CreateAccessToken(playerLoginDTO),
+		RefreshToken: jwttoken.NewJwtToken().CreateRefreshToken(playerLoginDTO),
 	}
 
 	return auth.SuccessResponse.SetData(loginResponse).SetStatus(200).Build()

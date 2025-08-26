@@ -51,9 +51,7 @@ func (h *Handler) PlayerLogin(c echo.Context) error {
 		return c.JSON(result.GetStatus(), result)
 	}
 
-	authService := auth.NewAuthService()
-
-	result := authService.Login(playerLoginDTO)
+	result := auth.NewAuthService().Login(playerLoginDTO)
 
 	return c.JSON(result.GetStatus(), result)
 }

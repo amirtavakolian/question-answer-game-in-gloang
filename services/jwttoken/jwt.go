@@ -1,6 +1,7 @@
 package jwttoken
 
 import (
+	"QA-Game/param/playerparam"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"time"
@@ -39,18 +40,19 @@ func NewJwtToken() JwtService {
 	}
 }
 
-func (jwtToken JwtService) CreateAccessToken(phoneNumber string) string {
-	return jwtToken.createToken(phoneNumber, AccessTokenSubject)
+func (jwtToken JwtService) CreateAccessToken(playerDto playerparam.PlayerLoginRequest) string {
+	return jwtToken.createToken(playerDto, AccessTokenSubject)
 }
 
-func (jwtToken JwtService) CreateRefreshToken(phoneNumber string) string {
-	return jwtToken.createToken(phoneNumber, RefreshTokenSubject)
+func (jwtToken JwtService) CreateRefreshToken(playerDto playerparam.PlayerLoginRequest) string {
+	return jwtToken.createToken(playerDto, RefreshTokenSubject)
 }
 
-func (jwtToken JwtService) createToken(phoneNumber string, subject string) string {
+func (jwtToken JwtService) createToken(playerDto playerparam.PlayerLoginRequest, subject string) string {
 
 	anotherClaim := jwt.MapClaims{
-		"phone_number": phoneNumber,
+		"phone_number": playerDto.PhoneNumber,
+		"user_id":      playerDto.UserId,
 		"exp":          jwtToken.accessExpirationTime,
 		"sub":          subject,
 	}

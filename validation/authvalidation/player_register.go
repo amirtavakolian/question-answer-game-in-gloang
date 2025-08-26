@@ -17,7 +17,7 @@ func (r PlayerRegisterValidation) Validate(registerPlayerDTO playerparam.PlayerR
 
 		validation.Field(&registerPlayerDTO.Name,
 			validation.Required,
-			validation.Length(5, 200),
+			validation.Length(3, 200),
 		),
 
 		validation.Field(&registerPlayerDTO.PhoneNumber,
