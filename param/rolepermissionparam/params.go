@@ -12,5 +12,5 @@ type StoreRoleParam struct {
 
 type AssignPermissionToRoleParam struct {
 	Role_id       int `json:"role_id"`
-	Permission_id int `json:"permission_id"`
+	Permission_id []int `json:"permission_id"`
 }

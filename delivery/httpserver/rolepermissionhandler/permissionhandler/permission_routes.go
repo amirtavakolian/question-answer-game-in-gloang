@@ -7,8 +7,9 @@ import (
 
 func (h PermissionHandler) SetPermissionRoutes(c *echo.Echo) {
 
-	permissionPrefix := c.Group("/permission")
+	permissionPrefix := c.Group("/permission", mw.JWT(h.signKey))
 
-	permissionPrefix.POST("/store", h.Store, mw.JWT(h.signKey))
+	permissionPrefix.POST("/store", h.Store)
+	permissionPrefix.POST("/assign/role", h.AssignPermToRole)
 
 }

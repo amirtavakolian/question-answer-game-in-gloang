@@ -7,4 +7,5 @@ import (
 
 type PermissionRepository interface {
 	Store(permission rolepermissionparam.StorePermissionParam) dbresponses.PermissionResponse
+	AssignPermToRole(assignPermToRoleParams rolepermissionparam.AssignPermissionToRoleParam) dbresponses.PermissionResponse
 }

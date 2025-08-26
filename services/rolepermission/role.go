@@ -16,6 +16,7 @@ type RoleService struct {
 	ErrorResponse         response.Response
 	SuccessResponse       response.Response
 	RoleRepository        contracts.RoleRepository
+	AssignValidation      rolepermvalidation.AssignValidation
 }
 
 func New() RoleService {
@@ -39,3 +40,4 @@ func (s RoleService) Store(roleParam rolepermissionparam.StoreRoleParam) respons
 
 	return s.ErrorResponse.SetData(storeRoleResult).SetStatus(http.StatusBadRequest).Build()
 }
+
