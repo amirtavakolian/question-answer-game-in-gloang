@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h Handler) SetRoleRoutes(c *echo.Echo) {
+func (h RoleHandler) SetRoleRoutes(c *echo.Echo) {
 
 	prefix := c.Group("/role")
 

@@ -11,23 +11,23 @@ import (
 	"net/http"
 )
 
-type Service struct {
+type RoleService struct {
 	RoleValidationService rolepermvalidation.RoleValidation
 	ErrorResponse         response.Response
 	SuccessResponse       response.Response
 	RoleRepository        contracts.RoleRepository
 }
 
-func New() Service {
-	return Service{
-		RoleValidationService: rolepermvalidation.New(),
+func New() RoleService {
+	return RoleService{
+		RoleValidationService: rolepermvalidation.NewRoleValidation(),
 		ErrorResponse:         richerror.NewErrorResponse(),
 		SuccessResponse:       successresponse.NewSuccessResponse(),
 		RoleRepository:        mysql.NewRoleRepo(),
 	}
 }
 
-func (s Service) Store(roleParam roleparam.StoreRoleParam) response.Response {
+func (s RoleService) Store(roleParam roleparam.StoreRoleParam) response.Response {
 
 	validateRoleResult, validateRoleData := s.RoleValidationService.Validate(roleParam)
 

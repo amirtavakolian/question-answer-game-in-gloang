@@ -10,7 +10,7 @@ import (
 type RoleValidation struct {
 }
 
-func New() RoleValidation {
+func NewRoleValidation() RoleValidation {
 	return RoleValidation{}
 }
 
