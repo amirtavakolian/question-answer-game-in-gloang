@@ -1,11 +1,12 @@
 package httpserver
 
 import (
+	"QA-Game/delivery/httpserver/categoryhandler"
 	"QA-Game/delivery/httpserver/playerhandler"
 	"QA-Game/delivery/httpserver/profilehandler"
-		"QA-Game/delivery/httpserver/rolepermissionhandler/permissionhandler"
-"QA-Game/delivery/httpserver/rolepermissionhandler/rolehandler"
-"github.com/labstack/echo/v4"
+	"QA-Game/delivery/httpserver/rolepermissionhandler/permissionhandler"
+	"QA-Game/delivery/httpserver/rolepermissionhandler/rolehandler"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
@@ -24,6 +25,7 @@ func (server *HttpServer) Serve() {
 	profileHld := profilehandler.New(signKey)
 	roleHld := rolehandler.NewRoleHandler(signKey)
 	permissionHld := permissionhandler.NewPermissionHandler(signKey)
+	categoryHld := categoryhandler.NewCategoryHandler()
 
 	e := echo.New()
 
@@ -34,6 +36,7 @@ func (server *HttpServer) Serve() {
 	profileHld.SetProfileRoutes(e)
 	roleHld.SetRoutes(e)
 	permissionHld.SetPermissionRoutes(e)
+	categoryHld.SetCategoryRoutes(e)
 
 	e.Start("127.0.0.1:8000")
 
