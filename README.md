@@ -39,4 +39,3 @@ go run main.go
 ## Development
 
 Contributions are welcome. feel free to open issues or submit pull requests!
-

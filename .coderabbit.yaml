@@ -1,0 +1,73 @@
+# https://docs.coderabbit.ai/reference/yaml-template
+
+# تنظیمات کلی
+language: "en-US"  # از انگلیسی برای بررسی‌های واضح و دقیق استفاده کنید
+tone_instructions: "Be direct, critical, and constructive. Focus on potential improvements, risks, and strict adherence to best practices. Do not sugarcoat issues. Use a professional and assertive tone, always emphasizing code quality and long-term maintainability. Clearly explain why something is wrong and how to fix it — avoid vague feedback, always be clear, specific, and actionable. Prioritize maintainability, performance, security, and idiomatic Go practices. In addition to general code quality, always verify adherence to the SOLID principles. If any principle is violated, identify the issue, explain why it is a violation, and propose a better approach. Also, analyze the code for opportunities where applying a design pattern would improve structure, scalability, readability, or flexibility. Explicitly recommend the appropriate design pattern and explain why it would be beneficial. Be strict, detailed, and uncompromising in enforcing professional standards, while remaining constructive and solution-oriented. The goal is to guide the developer toward writing high-quality, maintainable, and future-proof Go code."  # لحن سفارشی برای بازخوردهای قوی و مستقیم
+early_access: true  # فعال کردن ویژگی‌های دسترسی زودهنگام برای قابلیت‌های بررسی پیشرفته
+enable_free_tier: false  # غیرفعال کردن سطح رایگان برای اطمینان از دسترسی کامل به ویژگی‌ها (با فرض طرح پرداختی)
+
+# تنظیمات بررسی‌ها
+reviews:
+  profile: "assertive"  # بازخورد بیشتر، شامل جزئیات کوچک، برای گرفتن تمام بهبودهای ممکن
+  request_changes_workflow: true  # الزام حل تمام کامنت‌ها قبل از تصویب؛ مسدود کردن ادغام‌ها در صورت مسائل حل‌نشده
+  high_level_summary: true  # تولید خلاصه‌ها برای برجسته کردن کیفیت کلی
+  high_level_summary_placeholder: "@coderabbitai summary"
+  high_level_summary_in_walkthrough: true  # شامل خلاصه در walkthrough برای زمینه بهتر
+  auto_title_placeholder: "@coderabbitai"
+  auto_title_instructions: "Generate concise, descriptive titles that highlight key changes and any potential issues."
+  review_status: true  # ارسال وضعیت بررسی دقیق
+  commit_status: true  # به‌روزرسانی وضعیت کامیت در حین بررسی
+  fail_commit_status: true  # شکست‌خورده کردن وضعیت کامیت اگر بررسی نتواند ادامه یابد یا خطاهایی داشته باشد، برای اعمال اصلاحات قبل از ادغام
+  poem: false  # غیرفعال کردن شعرها برای لحن حرفه‌ای و جدی
+  path_instructions:  # دستورالعمل‌های خاص مسیر برای سختگیری هدفمند در فایل‌های Go
+    - path: "**/*.go"  # برای فایل‌های Go
+      instructions: "Enforce gofmt and go vet standards, check for proper error handling, use of interfaces, concurrency safety (e.g., avoid race conditions), and validate security (e.g., no hardcoded secrets)."
+  language_instructions:  # قوانین خاص زبان برای اعمال بهترین شیوه‌ها در Go
+    - language: "go"
+      instructions: "Follow Effective Go guidelines, use context for cancellations, prefer composition over inheritance, implement table-driven tests, and ensure proper use of goroutines and channels."
+  review_simple_changes: true  # بررسی حتی تغییرات کوچک به صورت سختگیرانه
+  review_comment_lgtm: false  # غیرفعال کردن LGTM خودکار برای اجبار بررسی‌های کامل
+  collapse_walkthrough: false  # نگه داشتن walkthrough باز برای دید کامل
+  experimental_parallel_processing: true  # فعال کردن برای بررسی‌های سریع‌تر و جامع‌تر (اگر در دسترس باشد)
+
+# تنظیمات قوانین
+# قوانین سفارشی برای اعمال بهترین شیوه‌ها در سراسر codebase. این قوانین به صورت سختگیرانه ارزیابی می‌شوند.
+rules:
+  - name: "Security Best Practices"
+    language: "universal"  # اعمال به تمام زبان‌ها
+    description: "Check for common security vulnerabilities like SQL injection, XSS, hardcoded credentials, and ensure use of secure libraries."
+    regex: ""  # از regex در صورت نیاز برای تطبیق الگو استفاده کنید
+    paths: []  # اعمال به تمام مسیرها
+  - name: "Performance Optimization"
+    language: "universal"
+    description: "Identify inefficient algorithms (e.g., O(n^2) in loops), suggest caching, and flag unnecessary computations."
+    regex: ""
+    paths: []
+  - name: "Readability and Maintainability"
+    language: "universal"
+    description: "Enforce meaningful variable names, short functions (<50 lines), proper documentation (e.g., godoc comments), and adherence to DRY principle."
+    regex: ""
+    paths: []
+  - name: "Error Handling"
+    language: "universal"
+    description: "Ensure all potential exceptions are handled, use logging for errors, and avoid silent failures."
+    regex: ""
+    paths: []
+  - name: "Testing Coverage"
+    language: "universal"
+    description: "Suggest adding unit/integration tests for new code, aim for >80% coverage, and flag untested edge cases."
+    regex: ""
+    paths: ["**/*.test.*", "**/tests/**"]  # تمرکز روی فایل‌های تست اما پیشنهاد برای دیگران
+
+disable_rules: []  # هیچ قانونی را غیرفعال نکنید؛ همه را برای سختگیری کامل فعال نگه دارید
+
+# تنظیمات چت‌ها
+chats:
+  auto_reply: false  # غیرفعال کردن پاسخ‌های خودکار برای تشویق تعامل دستی و بحث‌های عمیق‌تر
+  require_tests: true  # الزام تست‌ها برای تغییرات در چت‌ها
+  require_tasks: true  # الزام شکستن تغییرات به وظایف
+  require_security: true  # همیشه بررسی امنیت در پاسخ‌های چت
+
+# تنظیمات ابزارها 
+tools:
+  auto_detect: true  # تشخیص خودکار و اعمال بهترین شیوه‌های خاص ابزار (مثل لینترها)

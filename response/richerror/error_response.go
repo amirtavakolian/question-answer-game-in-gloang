@@ -1,6 +1,8 @@
 package richerror
 
-import "QA-Game/response"
+import (
+	"QA-Game/response"
+	)
 
 type ErrorResponse struct {
 	Status  int

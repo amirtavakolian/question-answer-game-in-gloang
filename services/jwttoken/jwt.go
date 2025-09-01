@@ -1,6 +1,7 @@
 package jwttoken
 
 import (
+	"QA-Game/param/playerparam"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"time"
@@ -13,7 +14,7 @@ const (
 
 type MyCustomClaims struct {
 	PhoneNumber string `json:"phone_number"`
-	jwt.RegisteredClaims
+	*jwt.RegisteredClaims
 }
 
 type JwtResponse struct {
@@ -39,18 +40,19 @@ func NewJwtToken() JwtService {
 	}
 }
 
-func (jwtToken JwtService) CreateAccessToken(phoneNumber string) string {
-	return jwtToken.createToken(phoneNumber, AccessTokenSubject)
+func (jwtToken JwtService) CreateAccessToken(playerDto playerparam.PlayerLoginRequest) string {
+	return jwtToken.createToken(playerDto, AccessTokenSubject)
 }
 
-func (jwtToken JwtService) CreateRefreshToken(phoneNumber string) string {
-	return jwtToken.createToken(phoneNumber, RefreshTokenSubject)
+func (jwtToken JwtService) CreateRefreshToken(playerDto playerparam.PlayerLoginRequest) string {
+	return jwtToken.createToken(playerDto, RefreshTokenSubject)
 }
 
-func (jwtToken JwtService) createToken(phoneNumber string, subject string) string {
+func (jwtToken JwtService) createToken(playerDto playerparam.PlayerLoginRequest, subject string) string {
 
 	anotherClaim := jwt.MapClaims{
-		"phone_number": phoneNumber,
+		"phone_number": playerDto.PhoneNumber,
+		"player_id":      playerDto.PlayerId,
 		"exp":          jwtToken.accessExpirationTime,
 		"sub":          subject,
 	}
@@ -68,7 +70,7 @@ func (jwtToken JwtService) createToken(phoneNumber string, subject string) strin
 
 func (jwtToken JwtService) Get(tokenString string) (bool, string, *MyCustomClaims) {
 
-	jwtResponse := jwtToken.ValidateTokenExpiration(tokenString)
+	jwtResponse := jwtToken.ParseToken(tokenString)
 
 	if !jwtResponse.Status {
 		return false, jwtResponse.Message, nil
@@ -81,7 +83,7 @@ func (jwtToken JwtService) Get(tokenString string) (bool, string, *MyCustomClaim
 	}
 }
 
-func (jwtToken JwtService) ValidateTokenExpiration(tokenString string) JwtResponse {
+func (jwtToken JwtService) ParseToken(tokenString string) JwtResponse {
 
 	token, err := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(token *jwt.Token) (any, error) {
 		return []byte(jwtToken.signedKey), nil

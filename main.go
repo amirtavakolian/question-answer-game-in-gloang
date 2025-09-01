@@ -1,12 +1,12 @@
 package main
 
 import (
-	"QA-Game/delivery/httpdelivery"
+	"QA-Game/delivery/httpserver"
 )
 
 func main() {
 
-	httpServer := httpdelivery.NewHttpServer()
+	httpServer := httpserver.NewHttpServer()
 
 	httpServer.Serve()
 }

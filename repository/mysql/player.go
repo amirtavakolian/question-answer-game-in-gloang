@@ -1,8 +1,9 @@
 package mysql
 
 import (
-	"QA-Game/dto/playerdto"
 	"QA-Game/entity"
+	"QA-Game/param/playerparam"
+	"QA-Game/repository/dbresponses"
 	"database/sql"
 	"fmt"
 )
@@ -32,7 +33,7 @@ func (p *Player) IsPhoneNumberExist(phoneNumber string) (bool, error) {
 	return false, fmt.Errorf("Phone number is available")
 }
 
-func (p *Player) Store(playerDTO playerdto.PlayerRegister) (entity.Player, error) {
+func (p *Player) Store(playerDTO playerparam.PlayerRegisterRequest) (entity.Player, error) {
 
 	playerEntity := entity.Player{}
 
@@ -52,17 +53,17 @@ func (p *Player) Store(playerDTO playerdto.PlayerRegister) (entity.Player, error
 	return playerEntity, nil
 }
 
-func (p *Player) FindPlayerByPhoneNumber(phoneNumber string) (string, string, error) {
+func (p *Player) FindPlayerByPhoneNumber(phoneNumber string) (dbresponses.Player, error) {
 
-	result := p.Connection.DB.QueryRow("SELECT phone_number, password FROM players WHERE phone_number = ?", phoneNumber)
+	result := p.Connection.DB.QueryRow("SELECT id, phone_number, password FROM players WHERE phone_number = ?", phoneNumber)
 
-	var phone_number, password string
+	var response dbresponses.Player
 
-	scanResult := result.Scan(&phone_number, &password)
+	scanResult := result.Scan(&response.PlayerId, &response.PhoneNumber, &response.Password)
 
 	if scanResult != nil {
-		return "", "", fmt.Errorf("Player not found.")
+		return response, fmt.Errorf("Player not found.")
 	}
 
-	return phone_number, password, nil
+	return response, nil
 }
